@@ -1,5 +1,14 @@
 'use strict';
 
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("/serviceWorker.js")
+        .then(res => console.log("service worker registered", res))
+        .catch(err => console.log("service worker not registered", err))
+    })
+  }
+
 import {StoreController} from './controller/controller.js';
 
 let firsTime = 0;

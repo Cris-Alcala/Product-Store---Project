@@ -6,6 +6,7 @@
     "background_color": "#0a1938",
     "theme_color": "#0a1938",
     "orientation": "portrait-primary",
+    "scope": "/",
     "icons": [
       {
         "src": "/img/shortcuts/almacen72.png",
