@@ -27,5 +27,5 @@ export class Product {
         }
     }
 
-    productImport() {return this.price*this.units;}
+    productImport() {return (this.price*this.units).toFixed(2);}
 }

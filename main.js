@@ -2,14 +2,21 @@
 
 import {StoreController} from './controller/controller.js';
 
+let firsTime = 0;
 let lastProduct = null;
 let storeController = new StoreController();
 let newProd = document.getElementById('newProd');
 let h2 = document.querySelector('h2');
 let button = document.querySelector('.recovery');
 let buttonSubmit = document.querySelector('[type="submit"]');
-h2.addEventListener('click', () => {
-    newProd.classList.toggle('expand');
+newProd.addEventListener('click', (e) => {
+    firsTime++;
+    if (e.target==h2) {
+        newProd.classList.toggle('expand');
+        if (firsTime!=1) {
+            newProd.classList.toggle('hided');
+        }
+    }
 });
 newProd.addEventListener('submit', e => {
     e.preventDefault();
@@ -21,7 +28,13 @@ newProd.addEventListener('submit', e => {
         lastProduct = storeController.changeProductInStore(Number(formData.get('newProd-id')), formData.get('newProd-name'), Number(formData.get('newProd-price')), Number(formData.get('newProd-units')))
         newProd.querySelectorAll('input').forEach(input => input.value = "");
     }
+    newProd.classList.remove('expand');
+    newProd.classList.add('hided');
 });
+
+newProd.addEventListener('reset', () => {
+    buttonSubmit.innerHTML='Añadir';
+})
 
 button.addEventListener('click', (e) => {
     let form = document.querySelector('form');

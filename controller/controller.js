@@ -78,10 +78,11 @@ export class StoreController {
 
     changeProductInStore(productId, name, price, units){
         const modProd = this.productStore.modProduct(productId, name, price, units);
+        console.log(modProd);
         if (modProd!==null) {
             this.storeView.renderEditProduct(modProd);
-            this.storeView.renderSuccessMessage('Producto actualizado correctamente');
             this.storeView.renderStoreImport();
+            this.storeView.renderSuccessMessage('Producto actualizado correctamente');
         } else this.storeView.renderErrorMessage('Error al modificar');
         return modProd;
     }

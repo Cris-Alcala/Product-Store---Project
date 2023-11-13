@@ -43,6 +43,8 @@ export class StoreView {
             inputUnits.value=newProduct.getUnits;
             inputPrice.value=newProduct.getPrice;
             submit.innerHTML='Actualizar';
+            this.newForm.classList.remove('hided');
+            this.newForm.classList.add('expand');
         });
         let imgDelProduct = document.createElement('img');
         imgDelProduct.setAttribute('src', 'img/eliminar.png');
@@ -75,7 +77,7 @@ export class StoreView {
         productsWithoutHeaders.forEach(product => {
             if (product.querySelector('td').innerHTML==newProduct.getID) {
                 product.querySelector(':nth-child(3)').innerHTML=newProduct.getUnits;
-                product.querySelector(':nth-child(5)').innerHTML=newProduct.productImport().toFixed(2)+' €';
+                product.querySelector(':nth-child(5)').innerHTML=newProduct.productImport()+' €';
             }
             
         });
@@ -113,7 +115,7 @@ export class StoreView {
             document.getElementById('prodAlert').classList.add('alert-danger');
         }
         document.getElementById('prodAlert').innerHTML=message;
-        setTimeout(this.disableMessage, 2000);
+        setTimeout(this.disableMessage, 5000);
     }
     
     renderSuccessMessage(message) {
@@ -125,7 +127,7 @@ export class StoreView {
             document.getElementById('prodAlert').classList.add('alert-success');
         }
         document.getElementById('prodAlert').innerHTML=message;
-        setTimeout(this.disableMessage, 2000);
+        setTimeout(this.disableMessage, 5000);
     }
 
     disableMessage() {
