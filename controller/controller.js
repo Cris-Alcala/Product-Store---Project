@@ -78,7 +78,6 @@ export class StoreController {
 
     changeProductInStore(productId, name, price, units){
         const modProd = this.productStore.modProduct(productId, name, price, units);
-        console.log(modProd);
         if (modProd!==null) {
             this.storeView.renderEditProduct(modProd);
             this.storeView.renderStoreImport();
