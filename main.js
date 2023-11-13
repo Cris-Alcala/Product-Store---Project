@@ -1,5 +1,13 @@
 'use strict';
 
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
+document.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    return (e.key=='F12')?false:null;
+});
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
       navigator.serviceWorker
