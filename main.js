@@ -4,8 +4,7 @@ document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
 });
 document.addEventListener('keydown', (e) => {
-    e.preventDefault();
-    return (e.key=='F12')?false:null;
+    return (e.key=='F12')?e.preventDefault():null;
 });
 
 if ("serviceWorker" in navigator) {
