@@ -1,26 +1,26 @@
 const staticStore = "2daw-store-storage"
-// const assets = [
-//   "/",
-//   "/index.html",
-//   "/css/style.css",
-//   "/main.js",
-//   "/controller/controller.js",
-//   "/model/product.class.js",
-//   "/model/store.class.js",
-//   "/view/view.js",
-//   "/img/eliminar.png",
-//   "/img/flecha-abajo.png",
-//   "/img/flecha-arriba.png",
-//   "/img/modificar.png",
-//   "/img/shortcuts/almacen72.png",
-//   "/img/shortcuts/almacen96.png",
-//   "/img/shortcuts/almacen128.png",
-//   "/img/shortcuts/almacen144.png",
-//   "/img/shortcuts/almacen152.png",
-//   "/img/shortcuts/almacen192.png",
-//   "/img/shortcuts/almacen384.png",
-//   "/img/shortcuts/almacen512.png",
-// ];
+const assets = [
+  "/Projects/StoreProjectV1",
+  "/Projects/StoreProjectV1/index.html",
+  "/Projects/StoreProjectV1/css/style.css",
+  "/Projects/StoreProjectV1/main.js",
+  "/Projects/StoreProjectV1/controller/controller.js",
+  "/Projects/StoreProjectV1/model/product.class.js",
+  "/Projects/StoreProjectV1/model/store.class.js",
+  "/Projects/StoreProjectV1/view/view.js",
+  "/Projects/StoreProjectV1/img/eliminar.png",
+  "/Projects/StoreProjectV1/img/flecha-abajo.png",
+  "/Projects/StoreProjectV1/img/flecha-arriba.png",
+  "/Projects/StoreProjectV1/img/modificar.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen72.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen96.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen128.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen144.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen152.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen192.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen384.png",
+  "/Projects/StoreProjectV1/img/shortcuts/almacen512.png",
+];
 
 self.addEventListener("install", installEvent => {
   installEvent.waitUntil(

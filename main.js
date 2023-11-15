@@ -1,12 +1,12 @@
 'use strict';
 
-// document.addEventListener('contextmenu', (e) => {
-//     e.preventDefault();
-// });
-// document.addEventListener('keydown', (e) => {
-//     (e.ctrlKey && e.key=='u')?e.preventDefault():null;
-//     (e.key=='F12')?e.preventDefault():null;
-// });
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
+document.addEventListener('keydown', (e) => {
+    (e.ctrlKey && e.key=='u')?e.preventDefault():null;
+    (e.key=='F12')?e.preventDefault():null;
+});
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
