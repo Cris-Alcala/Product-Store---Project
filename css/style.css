@@ -131,12 +131,20 @@ td img {
     margin-right: .5em;
 }
 
+tr td:last-child img {
+    visibility: hidden;
+}
+
+tr:hover td:last-child img {
+    visibility: visible;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
 #prodAlert {
-    margin-bottom: 2em;
     margin: 0 auto;
+    margin-bottom: 2em;
     text-align: center;
     width: 80%;
 }
