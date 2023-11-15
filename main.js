@@ -56,10 +56,11 @@ newProd.addEventListener('reset', () => {
 })
 
 button.addEventListener('click', (e) => {
-    let inputID = form.querySelector('#newProd-id');
-    let inputName = form.querySelector('#newProd-name');
-    let inputUnits = form.querySelector('#newProd-units');
-    let inputPrice = form.querySelector('#newProd-price');
+    let inputID = newProd.querySelector('#newProd-id');
+    let inputName = newProd.querySelector('#newProd-name');
+    let inputUnits = newProd.querySelector('#newProd-units');
+    let inputPrice = newProd.querySelector('#newProd-price');
+    console.log(lastProduct);
     if (inputID.innerHTML=='') {
         if (lastProduct!=null) {
             e.preventDefault();
