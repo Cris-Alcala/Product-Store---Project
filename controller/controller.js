@@ -17,12 +17,30 @@ export class StoreController {
             let tr = this.storeView.renderNewProduct(product);
             let imgMore = tr.querySelector('td:last-child img:first-child');
             let imgLess = tr.querySelector('td:last-child img:nth-child(2)');
+            let imgMod = tr.querySelector('td:last-child img:nth-child(3)');
             let imgDel = tr.querySelector('td:last-child img:nth-child(4)');
             imgMore.addEventListener('click', () => {
                 this.addProductStock(Number(imgMore.className));
             });
             imgLess.addEventListener('click', () => {
                 this.delProductStock(Number(imgLess.className));
+            });
+            imgMod.addEventListener('click', () => {
+                let idDiv = this.storeView.newForm.querySelector('div:nth-child(2)');
+                idDiv.classList.remove('hide-disappear');
+                idDiv.classList.add('hide-appear');
+                let inputID = this.storeView.newForm.querySelector('#newProd-id');
+                let inputName = this.storeView.newForm.querySelector('#newProd-name');
+                let inputUnits = this.storeView.newForm.querySelector('#newProd-units');
+                let inputPrice = this.storeView.newForm.querySelector('#newProd-price');
+                let submit = this.storeView.newForm.querySelector('button[type="submit"]');
+                inputID.value=product.getID;
+                inputName.value=product.getName;
+                inputUnits.value=product.getUnits;
+                inputPrice.value=product.getPrice;
+                submit.innerHTML='Actualizar';
+                this.storeView.newForm.classList.remove('hided');
+                this.storeView.newForm.classList.add('expand');
             });
             imgDel.addEventListener('click', () => {
                 this.deleteProductFromStore(Number(imgDel.className));

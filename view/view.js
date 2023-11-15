@@ -32,20 +32,23 @@ export class StoreView {
         imgLessStock.setAttribute('class', newProduct.getID);
         let imgModProduct = document.createElement('img');
         imgModProduct.setAttribute('src', 'img/modificar.png');
-        imgModProduct.addEventListener('click', () => {
-            let inputID = this.newForm.querySelector('#newProd-id');
-            let inputName = this.newForm.querySelector('#newProd-name');
-            let inputUnits = this.newForm.querySelector('#newProd-units');
-            let inputPrice = this.newForm.querySelector('#newProd-price');
-            let submit = this.newForm.querySelector('button[type="submit"]');
-            inputID.value=newProduct.getID;
-            inputName.value=newProduct.getName;
-            inputUnits.value=newProduct.getUnits;
-            inputPrice.value=newProduct.getPrice;
-            submit.innerHTML='Actualizar';
-            this.newForm.classList.remove('hided');
-            this.newForm.classList.add('expand');
-        });
+        // imgModProduct.addEventListener('click', () => {
+        //     let idDiv = this.newForm.querySelector('div:nth-child(2)');
+        //     idDiv.classList.remove('hide-disappear');
+        //     idDiv.classList.add('hide-appear');
+        //     let inputID = this.newForm.querySelector('#newProd-id');
+        //     let inputName = this.newForm.querySelector('#newProd-name');
+        //     let inputUnits = this.newForm.querySelector('#newProd-units');
+        //     let inputPrice = this.newForm.querySelector('#newProd-price');
+        //     let submit = this.newForm.querySelector('button[type="submit"]');
+        //     inputID.value=newProduct.getID;
+        //     inputName.value=newProduct.getName;
+        //     inputUnits.value=newProduct.getUnits;
+        //     inputPrice.value=newProduct.getPrice;
+        //     submit.innerHTML='Actualizar';
+        //     this.newForm.classList.remove('hided');
+        //     this.newForm.classList.add('expand');
+        // });
         let imgDelProduct = document.createElement('img');
         imgDelProduct.setAttribute('src', 'img/eliminar.png');
         imgDelProduct.setAttribute('class', newProduct.getID);
