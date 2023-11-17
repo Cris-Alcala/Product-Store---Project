@@ -14,21 +14,25 @@
     <div class="forms">
         <form id="newProd" class="expand">
             <h2>Añadir / Modificar Producto</h2>
-                <div class="form-group hide-disappear">
+                <div class="form-group id-group">
                     <label for="newProd-id">ID: </label>
-                    <input type="text" class="form-control" name="newProd-id" id="newProd-id" readonly>
+                    <input type="text" class="form-control" name="newProd-id" id="newProd-id">
+                    <span class="help"><span class="status_check"></span>Ej. AAA-0000</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group name-group">
                     <label for="newProd-name">Nombre:</label>
-                    <input type="text" class="form-control" name="newProd-name" id="newProd-name" required>
+                    <input type="text" class="form-control" name="newProd-name" id="newProd-name">
+                    <span class="help"><span class="status_check"></span>Debe estar comprendido entre 5 y 25 caracteres</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group units-group">
                     <label for="newProd-units">Unidades:</label>
-                    <input type="number" class="form-control" name="newProd-units" id="newProd-units" step="1" min="0" required>
+                    <input type="number" class="form-control" name="newProd-units" id="newProd-units" step="1">
+                    <span class="help"><span class="status_check"></span>Debe estar comprendido entre 0 y 100</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group price-group">
                     <label for="newProd-price">Precio:</label>
-                    <input type="number" class="form-control" name="newProd-price" id="newProd-price" step="0.05" min="0" required>
+                    <input type="number" class="form-control" name="newProd-price" id="newProd-price" step="0.01">
+                    <span class="help"><span class="status_check"></span>Debe estar comprendido entre 0 y 999.99</span>
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-default btn-primary">Añadir</button>

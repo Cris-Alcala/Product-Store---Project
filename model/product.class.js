@@ -1,13 +1,11 @@
 'use strict';
 
 export class Product {
-    static products = 1;
-    constructor (name, price = 0, units = 0) {
-        this.id = Product.products;
+    constructor (id, name, price = 0, units = 0) {
+        this.id = id;
         this.name = name;
         this.price = Number(price);
         this.units = Number(units);
-        Product.products++;
     }
 
     get getID() {return this.id;}
@@ -20,7 +18,7 @@ export class Product {
 
 
     changeUnits(units) {
-        if (this.units+Number(units)<0) return false;
+        if (this.units+Number(units)<0 || this.units+Number(units)>100) return false;
         else {
             this.units+=Number(units);
             return true;

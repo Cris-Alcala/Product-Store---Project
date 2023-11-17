@@ -10,8 +10,52 @@ export class StoreController {
         this.storeView = new StoreView();
     }
 
-    addProductToStore(name, price, units) {
-        let product = new Product(name, price, units);
+    inStoreProduct(productID) {
+        return this.productStore.findProduct(productID);
+    }
+
+    checkID() {
+        let regEx = /^[A-Z]{3}-[0-9]{4}$/;
+        const INPUTID = document.getElementById('newProd-id');
+        const SPAN = document.querySelector('.id-group .status_check');
+        console.log(SPAN);
+        if (regEx.test(INPUTID.value)) {
+            this.storeView.renderCheckStatus(INPUTID, SPAN);
+            return true;
+        } else this.storeView.renderUncheckStatus(INPUTID, SPAN);
+        return false;
+    }
+    checkName() {
+        let regEx = /^.{5,25}$/;
+        const INPUTNAME = document.getElementById('newProd-name');
+        const SPAN = document.querySelector('.name-group .status_check');
+        if (regEx.test(INPUTNAME.value)) {
+            this.storeView.renderCheckStatus(INPUTNAME, SPAN);
+            return true;
+        } else this.storeView.renderUncheckStatus(INPUTNAME, SPAN);
+        return false;
+    }
+    checkUnits() {
+        const INPUTUNITS = document.getElementById('newProd-units');
+        const SPAN = document.querySelector('.units-group .status_check');
+        if (INPUTUNITS.value>=0 && INPUTUNITS.value<=100 && INPUTUNITS.value!='') {
+            this.storeView.renderCheckStatus(INPUTUNITS, SPAN);
+            return true;
+        } else this.storeView.renderUncheckStatus(INPUTUNITS, SPAN);
+        return false;
+    }
+    checkPrice() {
+        const INPUTPRICE = document.getElementById('newProd-price');
+        const SPAN = document.querySelector('.price-group .status_check');
+        if (INPUTPRICE.value>=0 && INPUTPRICE.value<=999.99 && INPUTPRICE.value!='') {
+            this.storeView.renderCheckStatus(INPUTPRICE, SPAN);
+            return true;
+        } else this.storeView.renderUncheckStatus(INPUTPRICE, SPAN);
+        return false;
+    }
+
+    addProductToStore(id, name, price, units) {
+        let product = new Product(id, name, price, units);
         const newProd = this.productStore.addProduct(product);
         if (newProd!==null) {
             let tr = this.storeView.renderNewProduct(product);
@@ -20,15 +64,12 @@ export class StoreController {
             let imgMod = tr.querySelector('td:last-child img:nth-child(3)');
             let imgDel = tr.querySelector('td:last-child img:nth-child(4)');
             imgMore.addEventListener('click', () => {
-                this.addProductStock(Number(imgMore.className));
+                this.addProductStock(imgMore.className);
             });
             imgLess.addEventListener('click', () => {
-                this.delProductStock(Number(imgLess.className));
+                this.delProductStock(imgLess.className);
             });
             imgMod.addEventListener('click', () => {
-                let idDiv = this.storeView.newForm.querySelector('div:nth-child(2)');
-                idDiv.classList.remove('hide-disappear');
-                idDiv.classList.add('hide-appear');
                 let inputID = this.storeView.newForm.querySelector('#newProd-id');
                 let inputName = this.storeView.newForm.querySelector('#newProd-name');
                 let inputUnits = this.storeView.newForm.querySelector('#newProd-units');
@@ -43,7 +84,7 @@ export class StoreController {
                 this.storeView.newForm.classList.add('expand');
             });
             imgDel.addEventListener('click', () => {
-                this.deleteProductFromStore(Number(imgDel.className));
+                this.deleteProductFromStore(imgDel.className);
             });
             this.storeView.renderSuccessMessage('Añadido correctamente');
             this.storeView.renderStoreImport();
@@ -82,7 +123,7 @@ export class StoreController {
             this.storeView.renderChangeStock(stockProd);
             this.storeView.renderSuccessMessage('Unidades actualizadas correctamente');
             this.storeView.renderStoreImport();
-        } else this.storeView.renderErrorMessage('Stock mínimo');
+        } else this.storeView.renderErrorMessage('Stock Máximo');
     }
 
     delProductStock(productID) {
