@@ -198,7 +198,7 @@ tr:hover td:last-child img {
     }
 }
 
-@media (max-width: 660px) {
+@media (max-width: 600px) {
     form {
         width: 80%;
         min-height: 4em;
@@ -228,25 +228,36 @@ tr:hover td:last-child img {
 
     .expand {
         animation: expand 1s;
-        height: 38em;
+        height: 35em;
+    }
+
+    .hided {
+        animation: hided 1s;
+        height: 6em;
+    }
+
+    .help {
+        font-size: .7em;
+        margin-bottom: 0;
     }
 
     @keyframes expand {
         0% {
-            height: 4em;
+            height: 6em;
         }
     
         100% {
-            height: 38em;
+            height: 35em;
         }
     }
     @keyframes hided {
         0% {
-            height: 38em;
+            height: 35em;
         }
     
         100% {
-            height: 4em;
+            height: 6em;
         }
     }
+
 }
