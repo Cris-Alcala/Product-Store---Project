@@ -22,7 +22,6 @@ export class StoreController {
         let regEx = /^[A-Z]{3}-[0-9]{4}$/;
         const INPUTID = document.getElementById('newProd-id');
         const SPAN = document.querySelector('.id-group .status_check');
-        console.log(SPAN);
         if (regEx.test(INPUTID.value)) {
             this.storeView.renderCheckStatus(INPUTID, SPAN);
             return true;
@@ -96,7 +95,6 @@ export class StoreController {
             });
             this.storeView.renderSuccessMessage('Añadido correctamente');
             this.storeView.renderStoreImport();
-            console.log(this.productStore.getProducts);
         } else this.storeView.renderErrorMessage('Error al insertar');
     }
 
