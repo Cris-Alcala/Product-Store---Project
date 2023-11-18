@@ -1,12 +1,12 @@
 'use strict';
 
-document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-});
-document.addEventListener('keydown', (e) => {
-    (e.ctrlKey && e.key=='u')?e.preventDefault():null;
-    (e.key=='F12')?e.preventDefault():null;
-});
+// document.addEventListener('contextmenu', (e) => {
+//     e.preventDefault();
+// });
+// document.addEventListener('keydown', (e) => {
+//     (e.ctrlKey && e.key=='u')?e.preventDefault():null;
+//     (e.key=='F12')?e.preventDefault():null;
+// });
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
@@ -29,14 +29,24 @@ let priceInput = newProd.querySelector('#newProd-price');
 let h2 = document.querySelector('h2');
 let button = document.querySelector('.recovery');
 let buttonSubmit = document.querySelector('[type="submit"]');
+
 newProd.addEventListener('click', (e) => {
     if (e.target==h2) {
         newProd.classList.toggle('expand');
         newProd.classList.toggle('hided');
     }
 });
+
+idInput.addEventListener('keyup', () => {
+    storeController.checkProductInStore(idInput.value);
+})
+
 newProd.addEventListener('submit', e => {
     e.preventDefault();
+    storeController.checkID();
+    storeController.checkName();
+    storeController.checkUnits();
+    storeController.checkPrice();
     if (storeController.checkID()&&storeController.checkName()&&storeController.checkUnits()&&storeController.checkPrice()) {
         let formData = new FormData(newProd);
         if (storeController.inStoreProduct(formData.get('newProd-id'))==undefined) {
@@ -49,10 +59,11 @@ newProd.addEventListener('submit', e => {
         status.forEach(input => input.classList.remove('unchecked_radio'));
         status.forEach(input => input.classList.remove('checked_radio'));
         inputs.forEach(input => input.classList.remove('unchecked-input'));
+        inputs.forEach(input => input.classList.remove('checked-input'));
         newProd.querySelectorAll('input').forEach(input => input.value = "");
         newProd.classList.remove('expand');
         newProd.classList.add('hided');
-    }
+    } else storeController.showMessage('Error al registrar el producto')
 });
 
 newProd.addEventListener('reset', () => {
@@ -61,6 +72,7 @@ newProd.addEventListener('reset', () => {
     status.forEach(input => input.classList.remove('unchecked_radio'));
     status.forEach(input => input.classList.remove('checked_radio'));
     inputs.forEach(input => input.classList.remove('unchecked-input'));
+    inputs.forEach(input => input.classList.remove('checked-input'));
     buttonSubmit.innerHTML='Añadir';
 })
 
@@ -69,7 +81,6 @@ button.addEventListener('click', (e) => {
     let inputName = newProd.querySelector('#newProd-name');
     let inputUnits = newProd.querySelector('#newProd-units');
     let inputPrice = newProd.querySelector('#newProd-price');
-    console.log(lastProduct);
     if (inputID.innerHTML=='') {
         if (lastProduct!=null) {
             e.preventDefault();

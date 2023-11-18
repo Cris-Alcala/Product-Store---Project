@@ -14,6 +14,10 @@ export class StoreController {
         return this.productStore.findProduct(productID);
     }
 
+    checkProductInStore(idProduct) {
+        this.storeView.renderUpdateSubmitButton(this.inStoreProduct(idProduct));
+    }
+
     checkID() {
         let regEx = /^[A-Z]{3}-[0-9]{4}$/;
         const INPUTID = document.getElementById('newProd-id');
@@ -80,6 +84,10 @@ export class StoreController {
                 inputUnits.value=product.getUnits;
                 inputPrice.value=product.getPrice;
                 submit.innerHTML='Actualizar';
+                this.checkID();
+                this.checkName();
+                this.checkUnits();
+                this.checkPrice();
                 this.storeView.newForm.classList.remove('hided');
                 this.storeView.newForm.classList.add('expand');
             });
@@ -88,6 +96,7 @@ export class StoreController {
             });
             this.storeView.renderSuccessMessage('Añadido correctamente');
             this.storeView.renderStoreImport();
+            console.log(this.productStore.getProducts);
         } else this.storeView.renderErrorMessage('Error al insertar');
     }
 
@@ -110,8 +119,13 @@ export class StoreController {
                     } else this.storeView.renderSuccessMessage('Producto conservado');
                 } else {
                     const delProd = this.productStore.delProduct(productId);
-                    if (delProd!==null) this.storeView.renderDelProduct(productId);
-                    else this.storeView.renderErrorMessage('Error al eliminar');
+                    if (delProd!==null) {
+                        if (this.productStore.getProducts.length!=0) {
+                            this.storeView.renderDelProduct(productId);
+                        } else this.storeView.renderDelProduct(productId, true);
+                        this.storeView.renderSuccessMessage('Eliminado correctamente');
+                        this.storeView.renderStoreImport();
+                    } else this.storeView.renderErrorMessage('Error al eliminar');
                 }
             } else this.storeView.renderSuccessMessage('Producto conservado');
         } else this.storeView.renderErrorMessage('Producto no encontrado');

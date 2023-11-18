@@ -10,18 +10,26 @@ export class StoreView {
         this.newForm = document.getElementById('newProd');
     }
 
+    renderUpdateSubmitButton(product) {
+        let submitButton = this.newForm.querySelector('.form-buttons button:first-child');
+        (product!=undefined)?submitButton.innerHTML='Actualizar':submitButton.innerHTML='Añadir';
+    }
+
     renderCheckStatus(input, span) {
         input.classList.remove('unchecked-input');
+        input.classList.add('checked-input');
         span.classList.remove('unchecked_radio');
         span.classList.add('checked_radio');
     }
     renderUncheckStatus(input, span) {
+        input.classList.remove('checked-input');
         input.classList.add('unchecked-input');
         span.classList.remove('checked_radio');
         span.classList.add('unchecked_radio');
     }
 
     renderNewProduct(newProduct) {
+        this.prodsList.classList.remove('hide');
         this.prodsList.classList.add('display');
         let tr = document.createElement('tr');
         let tdId = document.createElement('td');
@@ -65,6 +73,7 @@ export class StoreView {
             this.prodsList.querySelectorAll('tr:nth-child(n+2)').forEach(product => (product.querySelector('td').innerHTML==productID)?product.remove():null);
         } else {
             this.prodsList.classList.remove('display');
+            this.prodsList.classList.add('hide');
             this.prodsList.querySelectorAll('tr:nth-child(n+2)').forEach(product => (product.querySelector('td').innerHTML==productID)?product.remove():null);
         }
     }
