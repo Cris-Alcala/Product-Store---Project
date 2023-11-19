@@ -22,36 +22,57 @@ import {StoreController} from './controller/controller.js';
 let lastProduct = null;
 let storeController = new StoreController();
 let newProd = document.getElementById('newProd');
+let idInput = newProd.querySelector('#newProd-id');
+let nameInput = newProd.querySelector('#newProd-name');
+let unitsInput = newProd.querySelector('#newProd-units');
+let priceInput = newProd.querySelector('#newProd-price');
 let h2 = document.querySelector('h2');
 let button = document.querySelector('.recovery');
 let buttonSubmit = document.querySelector('[type="submit"]');
-let idDiv = newProd.querySelector('div:nth-child(2)');
+
 newProd.addEventListener('click', (e) => {
     if (e.target==h2) {
         newProd.classList.toggle('expand');
         newProd.classList.toggle('hided');
     }
 });
+
+idInput.addEventListener('keyup', () => {
+    storeController.checkProductInStore(idInput.value);
+})
+
 newProd.addEventListener('submit', e => {
     e.preventDefault();
-    let formData = new FormData(newProd);
-    if (formData.get('newProd-id')=='') {
-        storeController.addProductToStore(formData.get('newProd-name'), formData.get('newProd-price'), formData.get('newProd-units'));
-    }  else {
-        lastProduct = storeController.changeProductInStore(Number(formData.get('newProd-id')), formData.get('newProd-name'), Number(formData.get('newProd-price')), Number(formData.get('newProd-units')));
-    }
-    newProd.querySelectorAll('input').forEach(input => input.value = "");
-    newProd.classList.remove('expand');
-    newProd.classList.add('hided');
-    setTimeout(()=>{
-        idDiv.classList.remove('hide-appear');
-        idDiv.classList.add('hide-disappear');
-    },1000);
+    storeController.checkID();
+    storeController.checkName();
+    storeController.checkUnits();
+    storeController.checkPrice();
+    if (storeController.checkID()&&storeController.checkName()&&storeController.checkUnits()&&storeController.checkPrice()) {
+        let formData = new FormData(newProd);
+        if (storeController.inStoreProduct(formData.get('newProd-id'))==undefined) {
+            storeController.addProductToStore(formData.get('newProd-id'), formData.get('newProd-name'), formData.get('newProd-price'), formData.get('newProd-units'));
+        }  else {
+            lastProduct = storeController.changeProductInStore(formData.get('newProd-id'), formData.get('newProd-name'), Number(formData.get('newProd-price')), Number(formData.get('newProd-units')));
+        }
+        let inputs = document.querySelectorAll('input');
+        let status = document.querySelectorAll('.status_check');
+        status.forEach(input => input.classList.remove('unchecked_radio'));
+        status.forEach(input => input.classList.remove('checked_radio'));
+        inputs.forEach(input => input.classList.remove('unchecked-input'));
+        inputs.forEach(input => input.classList.remove('checked-input'));
+        newProd.querySelectorAll('input').forEach(input => input.value = "");
+        newProd.classList.remove('expand');
+        newProd.classList.add('hided');
+    } else storeController.showMessage('Error al registrar el producto')
 });
 
 newProd.addEventListener('reset', () => {
-    idDiv.classList.remove('hide-appear');
-    idDiv.classList.add('hide-disappear');
+    let inputs = document.querySelectorAll('input');
+    let status = document.querySelectorAll('.status_check');
+    status.forEach(input => input.classList.remove('unchecked_radio'));
+    status.forEach(input => input.classList.remove('checked_radio'));
+    inputs.forEach(input => input.classList.remove('unchecked-input'));
+    inputs.forEach(input => input.classList.remove('checked-input'));
     buttonSubmit.innerHTML='Añadir';
 })
 
@@ -60,12 +81,9 @@ button.addEventListener('click', (e) => {
     let inputName = newProd.querySelector('#newProd-name');
     let inputUnits = newProd.querySelector('#newProd-units');
     let inputPrice = newProd.querySelector('#newProd-price');
-    console.log(lastProduct);
     if (inputID.innerHTML=='') {
         if (lastProduct!=null) {
             e.preventDefault();
-            idDiv.classList.remove('hide-disappear');
-            idDiv.classList.add('hide-appear');
             buttonSubmit.innerHTML='Actualizar';
             inputID.value=lastProduct.getID;
             inputName.value=lastProduct.getName;
@@ -73,4 +91,17 @@ button.addEventListener('click', (e) => {
             inputPrice.value=lastProduct.getPrice;
         } else storeController.showMessage('No hay productos actualizados recientemente');
     } 
+});
+
+idInput.addEventListener('keyup', () => {
+    storeController.checkID();
+});
+nameInput.addEventListener('keyup', () => {
+    storeController.checkName();
+});
+unitsInput.addEventListener('keyup', () => {
+    storeController.checkUnits();
+});
+priceInput.addEventListener('keyup', () => {
+    storeController.checkPrice();
 });
