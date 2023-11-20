@@ -1,13 +1,8 @@
 const staticStore = "2daw-store-storage"
 const assets = [
   "./index.html",
-  "./main.js",
   "./manifest.json",
   "/css/style.css",
-  "/controller/controller.js",
-  "/model/product.class.js",
-  "/model/store.class.js",
-  "/view/view.js",
   "/img/eliminar.png",
   "/img/flecha-abajo.png",
   "/img/flecha-arriba.png",

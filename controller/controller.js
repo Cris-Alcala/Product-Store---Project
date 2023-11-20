@@ -41,7 +41,8 @@ export class StoreController {
     checkUnits() {
         const INPUTUNITS = document.getElementById('newProd-units');
         const SPAN = document.querySelector('.units-group .status_check');
-        if (INPUTUNITS.value>=0 && INPUTUNITS.value<=100 && INPUTUNITS.value!='') {
+        let regEx = /^\d+$/;
+        if (INPUTUNITS.value>=0 && INPUTUNITS.value<=100 && INPUTUNITS.value!='' && regEx.test(INPUTUNITS.value)) {
             this.storeView.renderCheckStatus(INPUTUNITS, SPAN);
             return true;
         } else this.storeView.renderUncheckStatus(INPUTUNITS, SPAN);
