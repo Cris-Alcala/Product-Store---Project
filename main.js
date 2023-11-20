@@ -1,4 +1,5 @@
 'use strict';
+import {StoreController} from './controller/controller.js';
 
 document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
@@ -17,7 +18,6 @@ if ("serviceWorker" in navigator) {
     })
   }
 
-import {StoreController} from './controller/controller.js';
 
 let lastProduct = null;
 let storeController = new StoreController();
