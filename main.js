@@ -1,4 +1,5 @@
 'use strict';
+
 import {StoreController} from './controller/controller.js';
 
 document.addEventListener('contextmenu', (e) => {
@@ -16,7 +17,7 @@ if ("serviceWorker" in navigator) {
         .then(res => console.log("service worker registered", res))
         .catch(err => console.log("service worker not registered", err))
     })
-  }
+}
 
 
 let lastProduct = null;
@@ -29,6 +30,9 @@ let priceInput = newProd.querySelector('#newProd-price');
 let h2 = document.querySelector('h2');
 let button = document.querySelector('.recovery');
 let buttonSubmit = document.querySelector('[type="submit"]');
+
+storeController.getProductsFromDB()
+    .then(data => data.forEach(product => storeController.addProductToStore(product.product_id,product.name, product.price, product.units)));
 
 newProd.addEventListener('click', (e) => {
     if (e.target==h2) {

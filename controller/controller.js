@@ -58,44 +58,139 @@ export class StoreController {
         return false;
     }
 
+    async getProductsFromDB() {
+        return await fetch('http://localhost:3000/products')
+                        .then(response => response.json())
+                        .then(data => data.forEach(product_ => {
+                            let product = new Product(product_.product_id, product_.name, product_.price, product_.units);
+                                const newProd = this.productStore.addProduct(product);
+                                if (newProd!==null) {
+                                    let tr = this.storeView.renderNewProduct(product);
+                                    let imgMore = tr.querySelector('td:last-child img:first-child');
+                                    let imgLess = tr.querySelector('td:last-child img:nth-child(2)');
+                                    let imgMod = tr.querySelector('td:last-child img:nth-child(3)');
+                                    let imgDel = tr.querySelector('td:last-child img:nth-child(4)');
+                                    imgMore.addEventListener('click', () => {
+                                        this.addProductStock(imgMore.className);
+                                    });
+                                    imgLess.addEventListener('click', () => {
+                                        this.delProductStock(imgLess.className);
+                                    });
+                                    imgMod.addEventListener('click', () => {
+                                        let inputID = this.storeView.newForm.querySelector('#newProd-id');
+                                        let inputName = this.storeView.newForm.querySelector('#newProd-name');
+                                        let inputUnits = this.storeView.newForm.querySelector('#newProd-units');
+                                        let inputPrice = this.storeView.newForm.querySelector('#newProd-price');
+                                        let submit = this.storeView.newForm.querySelector('button[type="submit"]');
+                                        inputID.value=product.getID;
+                                        inputName.value=product.getName;
+                                        inputUnits.value=product.getUnits;
+                                        inputPrice.value=product.getPrice;
+                                        submit.innerHTML='Actualizar';
+                                        this.checkID();
+                                        this.checkName();
+                                        this.checkUnits();
+                                        this.checkPrice();
+                                        this.storeView.newForm.classList.remove('hided');
+                                        this.storeView.newForm.classList.add('expand');
+                                    });
+                                    imgDel.addEventListener('click', () => {
+                                        this.deleteProductFromStore(imgDel.className);
+                                    });
+                                    this.storeView.renderSuccessMessage('Añadido correctamente');
+                                    this.storeView.renderStoreImport();  
+                            } else this.storeView.renderErrorMessage('Error al insertar');
+                        }))
+                        .catch(error => console.log(error.message));
+    }
+
+    async searchProductOnDB(productID) {
+        let request = {
+            method:'GET',
+            headers: {
+                'Content-Type':'application/json',
+            },
+        }
+        return await fetch('http://localhost:3000/products?product_id='+productID, request)
+                        .then(response => response.json())
+                        .catch(error => console.log(error.message));
+    }
+
+    async addProductToDB(product) {
+        let request = {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body : JSON.stringify({
+                product_id:product.getID,
+                name:product.getName,
+                price:product.getPrice,
+                units:product.getUnits,
+            }),
+        }
+        return await fetch('http://localhost:3000/products', request)
+                        .then(response => response.json())
+                        .catch(error => error.message);
+    }
+
+    deleteProductFromDB(productID_) {
+        this.searchProductOnDB(productID_)
+            .then(async data => {
+                    let request = {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
+                    }
+                    return await fetch('http://localhost:3000/products/'+data[0].id, request)
+                                    .then(response => response.json())
+                                    .catch(error => console.log(error.message)); 
+                })
+    }
+
+
+
     addProductToStore(id, name, price, units) {
         let product = new Product(id, name, price, units);
-        const newProd = this.productStore.addProduct(product);
-        if (newProd!==null) {
-            let tr = this.storeView.renderNewProduct(product);
-            let imgMore = tr.querySelector('td:last-child img:first-child');
-            let imgLess = tr.querySelector('td:last-child img:nth-child(2)');
-            let imgMod = tr.querySelector('td:last-child img:nth-child(3)');
-            let imgDel = tr.querySelector('td:last-child img:nth-child(4)');
-            imgMore.addEventListener('click', () => {
-                this.addProductStock(imgMore.className);
-            });
-            imgLess.addEventListener('click', () => {
-                this.delProductStock(imgLess.className);
-            });
-            imgMod.addEventListener('click', () => {
-                let inputID = this.storeView.newForm.querySelector('#newProd-id');
-                let inputName = this.storeView.newForm.querySelector('#newProd-name');
-                let inputUnits = this.storeView.newForm.querySelector('#newProd-units');
-                let inputPrice = this.storeView.newForm.querySelector('#newProd-price');
-                let submit = this.storeView.newForm.querySelector('button[type="submit"]');
-                inputID.value=product.getID;
-                inputName.value=product.getName;
-                inputUnits.value=product.getUnits;
-                inputPrice.value=product.getPrice;
-                submit.innerHTML='Actualizar';
-                this.checkID();
-                this.checkName();
-                this.checkUnits();
-                this.checkPrice();
-                this.storeView.newForm.classList.remove('hided');
-                this.storeView.newForm.classList.add('expand');
-            });
-            imgDel.addEventListener('click', () => {
-                this.deleteProductFromStore(imgDel.className);
-            });
-            this.storeView.renderSuccessMessage('Añadido correctamente');
-            this.storeView.renderStoreImport();
+        if (this.addProductToDB(product)) {  
+            const newProd = this.productStore.addProduct(product);
+            if (newProd!==null) {
+                let tr = this.storeView.renderNewProduct(product);
+                let imgMore = tr.querySelector('td:last-child img:first-child');
+                let imgLess = tr.querySelector('td:last-child img:nth-child(2)');
+                let imgMod = tr.querySelector('td:last-child img:nth-child(3)');
+                let imgDel = tr.querySelector('td:last-child img:nth-child(4)');
+                imgMore.addEventListener('click', () => {
+                    this.addProductStock(imgMore.className);
+                });
+                imgLess.addEventListener('click', () => {
+                    this.delProductStock(imgLess.className);
+                });
+                imgMod.addEventListener('click', () => {
+                    let inputID = this.storeView.newForm.querySelector('#newProd-id');
+                    let inputName = this.storeView.newForm.querySelector('#newProd-name');
+                    let inputUnits = this.storeView.newForm.querySelector('#newProd-units');
+                    let inputPrice = this.storeView.newForm.querySelector('#newProd-price');
+                    let submit = this.storeView.newForm.querySelector('button[type="submit"]');
+                    inputID.value=product.getID;
+                    inputName.value=product.getName;
+                    inputUnits.value=product.getUnits;
+                    inputPrice.value=product.getPrice;
+                    submit.innerHTML='Actualizar';
+                    this.checkID();
+                    this.checkName();
+                    this.checkUnits();
+                    this.checkPrice();
+                    this.storeView.newForm.classList.remove('hided');
+                    this.storeView.newForm.classList.add('expand');
+                });
+                imgDel.addEventListener('click', () => {
+                    this.deleteProductFromStore(imgDel.className);
+                });
+                this.storeView.renderSuccessMessage('Añadido correctamente');
+                this.storeView.renderStoreImport();  
+        }
         } else this.storeView.renderErrorMessage('Error al insertar');
     }
 
@@ -114,6 +209,7 @@ export class StoreController {
                             } else this.storeView.renderDelProduct(productId, true);
                             this.storeView.renderSuccessMessage('Eliminado correctamente');
                             this.storeView.renderStoreImport();
+                            this.deleteProductFromDB(productId);
                         } else this.storeView.renderErrorMessage('Error al eliminar');
                     } else this.storeView.renderSuccessMessage('Producto conservado');
                 } else {
@@ -124,6 +220,7 @@ export class StoreController {
                         } else this.storeView.renderDelProduct(productId, true);
                         this.storeView.renderSuccessMessage('Eliminado correctamente');
                         this.storeView.renderStoreImport();
+                        this.deleteProductFromDB(productId);
                     } else this.storeView.renderErrorMessage('Error al eliminar');
                 }
             } else this.storeView.renderSuccessMessage('Producto conservado');
@@ -133,6 +230,23 @@ export class StoreController {
     addProductStock(productID) {
         const stockProd = this.productStore.changeProductUnits(productID, 1);
         if (stockProd!==null) {
+            this.searchProductOnDB(productID)
+                .then(async data => {
+                    let request = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
+                        body : JSON.stringify({
+                            name:data[0].name,
+                            price:data[0].price,
+                            units:data[0].units+1,
+                        }),
+                    }
+                    return await fetch('http://localhost:3000/products/'+data[0].id,request)
+                                    .then(response => response.json())
+                                    .catch(error, console.log(error.message));
+                })
             this.storeView.renderChangeStock(stockProd);
             this.storeView.renderSuccessMessage('Unidades actualizadas correctamente');
             this.storeView.renderStoreImport();
@@ -142,15 +256,49 @@ export class StoreController {
     delProductStock(productID) {
         const stockProd = this.productStore.changeProductUnits(productID, -1);
         if (stockProd!==null) {
+            this.searchProductOnDB(productID)
+                .then(async data => {
+                    let request = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
+                        body : JSON.stringify({
+                            name:data[0].name,
+                            price:data[0].price,
+                            units:data[0].units-1,
+                        }),
+                    }
+                    return await fetch('http://localhost:3000/products/'+data[0].id,request)
+                                    .then(response => response.json())
+                                    .catch(error, console.log(error.message));
+                })
             this.storeView.renderChangeStock(stockProd);
             this.storeView.renderSuccessMessage('Unidades actualizadas correctamente');
             this.storeView.renderStoreImport();
         } else this.storeView.renderErrorMessage('Stock mínimo');
     }
 
-    changeProductInStore(productId, name, price, units){
-        const modProd = this.productStore.modProduct(productId, name, price, units);
+    changeProductInStore(productID, name, price, units){
+        const modProd = this.productStore.modProduct(productID, name, price, units);
         if (modProd!==null) {
+            this.searchProductOnDB(productID)
+                .then(async data => {
+                    let request = {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
+                        body : JSON.stringify({
+                            name:name,
+                            price:price,
+                            units:units,
+                        }),
+                    }
+                    return await fetch('http://localhost:3000/products/'+data[0].id,request)
+                                    .then(response => response.json())
+                                    .catch(error, console.log(error.message));
+                })
             this.storeView.renderEditProduct(modProd);
             this.storeView.renderStoreImport();
             this.storeView.renderSuccessMessage('Producto actualizado correctamente');
